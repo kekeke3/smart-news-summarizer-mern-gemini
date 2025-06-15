@@ -1,1 +1,31 @@
 @import "tailwindcss";
+
+@theme {
+  --color-primary: #2563EB;
+  --color-secondary: #7C3AED;
+  --color-accent: #10B981;
+  --color-alert: #F59E0B;
+  --color-dark: #1F2937;
+  --color-light: #F3F4F6;
+}
+
+/* Custom styles */
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Smooth transitions */
+.transition {
+  transition: all 0.2s ease-in-out;
+}

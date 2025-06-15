@@ -1,33 +1,38 @@
-# 🧠 Smart News Summarizer (MERN + Gemini AI)
+# 🧠 Smart News Summarizer (MERN + Gemini AI + Prisma)
 
-A web application built with the MERN stack that fetches the latest news using a public News API and summarizes the articles using **Gemini AI (Google Generative Language API)**. Ideal for users who want to consume news faster and avoid information overload.
+A full-stack AI-powered web application that fetches real-time news using the GNews API and generates short, intelligent summaries using **Google Gemini AI**. Built with the **MERN stack** (MongoDB, Express.js, React, Node.js) and **Prisma ORM** for database interaction.
+
+> 📌 Ideal for users who want to consume news faster and avoid information overload.
 
 ---
 
 ## ✨ Features
 
-- 📰 Fetches real-time news from GNews API
-- 🤖 Summarizes articles using Gemini AI
-- ⚡ Fast and responsive UI with React
-- 🧠 Backed by Node.js and Express.js API
-- 💾 Optional: Save summaries in MongoDB (for later reading)
+- 📰 Fetches real-time news articles using the GNews API
+- 🤖 Generates AI summaries using Gemini AI (Google Generative Language API)
+- ⚡ Responsive user interface with React + Tailwind CSS (frontend)
+- 🧠 Express + Prisma ORM (backend)
+- 💾 Stores summarized news into MongoDB
 
 ---
 
 ## 🛠 Tech Stack
 
-- **Frontend:** React, Tailwind CSS
-- **Backend:** Node.js, Express.js
-- **AI Integration:** Google Gemini Pro API
-- **News Source:** GNews API / NewsAPI.org
-- **Database:** MongoDB (optional)
+| Layer       | Technology                            |
+|-------------|----------------------------------------|
+| Frontend    | React, Tailwind CSS                    |
+| Backend     | Node.js, Express.js                    |
+| AI Service  | Gemini AI (Google Generative AI API)   |
+| News Source | GNews API or NewsAPI.org               |
+| Database    | MongoDB with Prisma ORM                |
 
 ---
 
-## 🚀 Setup Instructions
+## 🔗 Live Demo
 
-### 1. Clone the Repository
+_(Add link here when deployed)_
 
-```bash
-git clone https://github.com/yourusername/smart-news-summarizer-mern-gemini.git
-cd smart-news-summarizer-mern-gemini
+---
+
+## 🏗️ Project Structure
+

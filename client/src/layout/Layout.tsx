@@ -1,8 +1,10 @@
-import { Outlet } from 'react-router-dom'
-import Navbar from '../components/Navbar'
-import Footer from '../components/Footer'
+import { Outlet } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const Layout = () => {
+  
+
   return (
     <div className="min-h-screen flex flex-col bg-light">
       <Navbar />
@@ -11,7 +13,10 @@ const Layout = () => {
       </main>
       <Footer />
     </div>
-  )
-}
+  );
+  
+};
 
-export default Layout
+
+
+export default Layout;

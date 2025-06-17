@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import axios from "axios";
+import prisma from "../config/db";
 
 export const summarizeText = async (req: Request, res: Response) => {
-  const { text } = req.body;
+  const { text, title } = req.body;
 
   try {
     const response = await axios.post(
@@ -17,8 +18,19 @@ export const summarizeText = async (req: Request, res: Response) => {
     );
 
     const summary = response.data.candidates[0].content.parts[0].text;
-    res.json({ summary });
-  } catch (error) {
-    res.status(500).json({ error: "Gemini API failed." });
+
+    // Save to MongoDB via Prisma
+    const article = await prisma.article.create({
+      data: {
+        title,
+        content: text,
+        summary,
+      },
+    });
+
+    res.json(article);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Gemini or DB error" });
   }
 };

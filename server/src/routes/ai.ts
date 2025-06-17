@@ -6,4 +6,5 @@ const router = express.Router();
 
 router.post("/summarize", summarizeText);
 
+
 export default router;

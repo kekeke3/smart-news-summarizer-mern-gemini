@@ -1,11 +1,20 @@
+import { useNavigate } from "react-router-dom";
+
 const NewsCard = ({ article, onSummarize }: any) => {
+  const navigate = useNavigate();
+
+  const handleViewArticle = () => {
+    navigate("/article", { state: { article } });
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
-      {article.image && (
+      {article.urlToImage && (
         <img
-          src={article.image}
+          src={article.urlToImage}
           alt={article.title}
-          className="w-full h-48 object-cover"
+          className="w-full h-48 object-cover cursor-pointer"
+          onClick={handleViewArticle}
         />
       )}
 
@@ -21,7 +30,13 @@ const NewsCard = ({ article, onSummarize }: any) => {
             {new Date(article.publishedAt).toLocaleDateString()}
           </span>
         </div>
-
+        {/*   <div>
+          <img
+            className="w-full h-40 max-h-40 object-cover mb-1"
+            src={article.urlToImage}
+            alt=""
+          />
+        </div> */}
         <h3 className="text-xl font-bold text-dark mb-2 line-clamp-2">
           {article.title}
         </h3>
@@ -38,10 +53,10 @@ const NewsCard = ({ article, onSummarize }: any) => {
           </a>
 
           <button
-            onClick={onSummarize}
-            className="px-4 py-2 bg-accent text-white rounded-md hover:bg-green-700 transition text-sm font-medium"
+            onClick={handleViewArticle}
+            className="cursor-pointer px-4 py-2 bg-accent text-white rounded-md hover:bg-green-700 transition text-sm font-medium"
           >
-            Summarize
+            View
           </button>
         </div>
       </div>

@@ -159,7 +159,6 @@ const HomePage = () => {
               <NewsCard
                 key={`${article.url}-${index}`} // Better key
                 article={article}
-                onSummarize={() => setSelectedArticle(article)}
               />
             ))}
           </div>

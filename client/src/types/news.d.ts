@@ -12,7 +12,7 @@ export type Article = {
   description: string;
   content: string;
   url: string;
-  image: string;
+  urlToImage: string;
   publishedAt: string;
   source: {
     name: string;

@@ -8,7 +8,7 @@ const ArticleView = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const article = location.state?.article as Article;
-  const [selectedArticle, setSelectedArticle] = useState<Article[]>([]);
+  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
   const [showQuestionInput, setShowQuestionInput] = useState(false);
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");

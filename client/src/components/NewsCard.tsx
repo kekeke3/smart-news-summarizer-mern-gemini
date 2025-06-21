@@ -1,9 +1,9 @@
-const NewsCard = ({ article, onSummarize }) => {
+const NewsCard = ({ article, onSummarize }: any) => {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
-      {article.imageUrl && (
+      {article.image && (
         <img
-          src={article.imageUrl}
+          src={article.image}
           alt={article.title}
           className="w-full h-48 object-cover"
         />
@@ -12,7 +12,10 @@ const NewsCard = ({ article, onSummarize }) => {
       <div className="p-6">
         <div className="flex justify-between items-start mb-2">
           <span className="text-sm font-medium text-primary">
-            {article.source}
+            {article.source.name}
+          </span>
+          <span className="text-sm font-medium text-primary">
+            {article.source.url}
           </span>
           <span className="text-xs text-gray-500">
             {new Date(article.publishedAt).toLocaleDateString()}

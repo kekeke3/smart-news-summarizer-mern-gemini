@@ -1,6 +1,6 @@
 import express from "express";
 
-import { summarizeText } from "../controllers/ai.controller";
+import { summarizeText } from "../controllers/ai";
 
 const router = express.Router();
 

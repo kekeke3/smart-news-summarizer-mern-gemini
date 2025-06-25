@@ -1,8 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import ArticleView from "./pages/ArticleView";
-import SavedSummariesPage from "./pages/SavedSummariesPage";
-import CategoriesPage from "./pages/CategoriesPage";
+import SavedArticles from "./pages/SavedArticles";
 import NotFoundPage from "./pages/NotFoundPage";
 import Layout from "./layout/Layout";
 
@@ -14,8 +13,7 @@ const App = () => {
           <Route index element={<HomePage />} />
           <Route path="/article" element={<ArticleView />} />
 
-          <Route path="saved" element={<SavedSummariesPage />} />
-          <Route path="categories" element={<CategoriesPage />} />
+          <Route path="saved" element={<SavedArticles />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

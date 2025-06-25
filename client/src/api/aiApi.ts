@@ -1,17 +1,14 @@
 import axios from "axios";
-import type { NewsParams } from "../types/news";
+import type { SummarizeParams } from "../types/ai";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
 
-export const fetchEverythingNews = async ({ q, page = 1 }: NewsParams) => {
+export const summarizeNews = async ({ content }: SummarizeParams) => {
   try {
-    const response = await axios.get(
-      `${API_BASE_URL}/api/news/fetch-everything-news`,
-      {
-        params: { q, page },
-      }
-    );
+    const response = await axios.get(`${API_BASE_URL}/api/ai/summarize`, {
+      params: { content },
+    });
 
     return {
       success: true,

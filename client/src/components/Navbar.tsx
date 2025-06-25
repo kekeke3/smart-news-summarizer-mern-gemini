@@ -46,14 +46,6 @@ const Navbar = () => {
           >
             Saved Summaries
           </Link>
-          <Link
-            to="/categories"
-            className={`transition ${
-              isActive("/categories") ? "text-accent" : "hover:text-accent"
-            }`}
-          >
-            Categories
-          </Link>
         </nav>
 
         <button className="md:hidden text-white">

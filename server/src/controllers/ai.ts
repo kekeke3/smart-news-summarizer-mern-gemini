@@ -1,25 +1,27 @@
 import { Request, Response } from "express";
-import axios from "axios";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import prisma from "../config/db";
 
-export const summarizeText = async (req: Request, res: Response) => {
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-001" });
+
+export const summarizeText = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const { text, title } = req.body;
 
+  if (!text || !title) {
+    res.status(400).json({ error: "Text and title are required" });
+    return;
+  }
+
   try {
-    const response = await axios.post(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent",
-      {
-        contents: [{ parts: [{ text }] }],
-      },
-      {
-        headers: { "Content-Type": "application/json" },
-        params: { key: process.env.GEMINI_API_KEY },
-      }
-    );
+    const result = await model.generateContent(`Summarize this: ${text}`);
+    const response = await result.response;
 
-    const summary = response.data.candidates[0].content.parts[0].text;
+    const summary = response.text();
 
-    // Save to MongoDB via Prisma
     const article = await prisma.article.create({
       data: {
         title,
@@ -28,9 +30,9 @@ export const summarizeText = async (req: Request, res: Response) => {
       },
     });
 
-    res.json(article);
-  } catch (err) {
-    console.error(err);
+    res.status(200).json(article);
+  } catch (error: any) {
+    console.error("Gemini error:", error.message || error);
     res.status(500).json({ error: "Gemini or DB error" });
   }
 };

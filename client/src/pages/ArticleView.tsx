@@ -9,27 +9,10 @@ const ArticleView = () => {
   const navigate = useNavigate();
   const article = location.state?.article as Article;
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
-  const [showQuestionInput, setShowQuestionInput] = useState(false);
-  const [question, setQuestion] = useState("");
-  const [answer, setAnswer] = useState("");
 
   if (!article) {
     return <div>Article not found</div>;
   }
-
-  const handleAskQuestion = async () => {
-    // Implement your question answering API call here
-    try {
-      // const response = await fetchQuestionAnswer(article.url, question);
-      // setAnswer(response.answer);
-      setAnswer(
-        "This is a simulated answer. Connect to your question-answering API to get real responses."
-      );
-    } catch (error) {
-      console.error("Error getting answer:", error);
-      setAnswer("Failed to get answer. Please try again.");
-    }
-  };
 
   return (
     <div className="max-w-4xl mx-auto p-4">
@@ -88,16 +71,11 @@ const ArticleView = () => {
           <div className="mt-8 flex flex-wrap gap-4">
             <button
               onClick={() => setSelectedArticle(article)}
-              className="px-6 py-3 bg-primary text-white rounded-md hover:bg-primary-dark transition font-medium"
+              className="cursor-pointer px-6 py-3 bg-primary text-white rounded-md hover:bg-primary-dark transition font-medium"
             >
               Summarize Article
             </button>
-            <button
-              onClick={() => setShowQuestionInput(!showQuestionInput)}
-              className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition font-medium"
-            >
-              Ask Questions
-            </button>
+
             <a
               href={article.url}
               target="_blank"
@@ -107,32 +85,6 @@ const ArticleView = () => {
               View Original
             </a>
           </div>
-
-          {showQuestionInput && (
-            <div className="mt-6">
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={question}
-                  onChange={(e) => setQuestion(e.target.value)}
-                  placeholder="Ask a question about this article..."
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-                <button
-                  onClick={handleAskQuestion}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                >
-                  Ask
-                </button>
-              </div>
-              {answer && (
-                <div className="mt-4 p-4 bg-gray-50 rounded-md">
-                  <h4 className="font-bold mb-2">Answer:</h4>
-                  <p>{answer}</p>
-                </div>
-              )}
-            </div>
-          )}
         </div>
       </article>
 

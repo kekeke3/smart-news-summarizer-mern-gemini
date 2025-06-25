@@ -1,3 +1,4 @@
 export type SummarizeParams = {
-  content: string;
+  text: string;
+  title: string;
 };

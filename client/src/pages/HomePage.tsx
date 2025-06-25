@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import NewsCard from "../components/NewsCard";
 import CategorySelector from "../components/CategorySelector";
 import SearchBar from "../components/SearchBar";
-import SummaryModal from "../components/SummaryModal";
 import { fetchTopHeadlinesNews, fetchEverythingNews } from "../api/newsApi";
 import type { Article } from "../types/news";
 import ContentScopeSelector from "../components/ContentScopeSelector";
@@ -15,7 +14,6 @@ const HomePage = () => {
   const [selectedContentScope, setSelectedContentScope] =
     useState("everything");
   const [searchQuery, setSearchQuery] = useState(null);
-  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null); // 🚨 Error state
   const [currentPage, setCurrentPage] = useState(1);
@@ -194,13 +192,6 @@ const HomePage = () => {
             </div>
           </div>
         </>
-      )}
-
-      {selectedArticle && (
-        <SummaryModal
-          article={selectedArticle}
-          onClose={() => setSelectedArticle(null)}
-        />
       )}
     </div>
   );

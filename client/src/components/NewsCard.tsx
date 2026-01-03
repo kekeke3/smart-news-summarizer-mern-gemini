@@ -1,42 +1,44 @@
+// client/src/components/NewsCard.tsx
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { saveArticle, unsaveArticle, isArticleSaved } from "../utils/storage";
-import { BookmarkIcon as BookmarkOutline } from "@heroicons/react/24/outline";
-import { BookmarkIcon as BookmarkSolid } from "@heroicons/react/24/solid";
+import { useState, useEffect } from "react";
+import { isArticleSaved } from "../utils/storage";
+import SaveButton from "./SaveButton";
+import type { Article } from "../utils/storage";
 
-const NewsCard = ({ article, showSaveButton = true }: any) => {
+interface NewsCardProps {
+  article: Article;
+  showSaveButton?: boolean;
+}
+
+const NewsCard = ({ article, showSaveButton = true }: NewsCardProps) => {
   const navigate = useNavigate();
-  const [isSaved, setIsSaved] = useState(isArticleSaved(article));
+  const [isSaved, setIsSaved] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false); // Add this state
+
+  // Check saved status on mount
+  useEffect(() => {
+    const checkSavedStatus = async () => {
+      const saved = await isArticleSaved(article);
+      setIsSaved(saved);
+    };
+    checkSavedStatus();
+  }, [article]);
 
   const handleViewArticle = () => {
     navigate("/article", { state: { article } });
-  };
-
-  const handleSaveArticle = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent triggering the card click when saving
-    if (isSaved) {
-      unsaveArticle(article);
-    } else {
-      saveArticle(article);
-    }
-    setIsSaved(!isSaved);
   };
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition relative">
       {/* Floating save button */}
       {showSaveButton && (
-        <button
-          onClick={handleSaveArticle}
-          className="cursor-pointer absolute top-2 right-2 z-10 p-2 bg-white/80 rounded-full backdrop-blur-sm hover:bg-white transition-all"
-          aria-label={isSaved ? "Unsave article" : "Save article"}
-        >
-          {isSaved ? (
-            <BookmarkSolid className="w-5 h-5 text-blue-500" />
-          ) : (
-            <BookmarkOutline className="w-5 h-5 text-gray-600" />
-          )}
-        </button>
+        <div className="absolute top-2 right-2 z-10">
+          <SaveButton
+            article={article}
+            size="md"
+            onLoginRequest={() => setShowLoginModal(true)} // Add this
+          />
+        </div>
       )}
 
       {/* Article image */}
@@ -48,6 +50,58 @@ const NewsCard = ({ article, showSaveButton = true }: any) => {
             className="w-full h-48 object-cover cursor-pointer"
             onClick={handleViewArticle}
           />
+          {/* Save indicator badge */}
+          {isSaved && (
+            <div className="absolute top-2 left-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
+              <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
+              </svg>
+              Saved
+            </div>
+          )}
+        </div>
+      )}
+
+      {showLoginModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-sm">
+            <div className="p-6">
+              <h3 className="text-lg font-bold text-dark mb-4">
+                Sign In to Save
+              </h3>
+              <p className="text-gray-600 mb-6 text-sm">
+                Create an account or sign in to save articles.
+              </p>
+              <div className="space-y-3">
+                <button
+                  onClick={() => {
+                    // Simple mock login
+                    localStorage.setItem("userId", `demo_user_${Date.now()}`);
+                    localStorage.setItem(
+                      "userData",
+                      JSON.stringify({
+                        name: "Demo User",
+                        email: "demo@example.com",
+                      })
+                    );
+                    setShowLoginModal(false);
+                    // Save the article after login
+                    saveArticle(article);
+                    setIsSaved(true);
+                  }}
+                  className="w-full bg-primary text-white py-2 rounded-md hover:bg-primary-dark transition font-medium"
+                >
+                  Continue as Demo User
+                </button>
+                <button
+                  onClick={() => setShowLoginModal(false)}
+                  className="w-full border border-gray-300 text-gray-700 py-2 rounded-md hover:bg-gray-50 transition font-medium"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 

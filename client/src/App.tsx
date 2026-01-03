@@ -4,20 +4,23 @@ import ArticleView from "./pages/ArticleView";
 import SavedArticles from "./pages/SavedArticles";
 import NotFoundPage from "./pages/NotFoundPage";
 import Layout from "./layout/Layout";
+import { AuthProvider } from "./contexts/AuthContext";
 
 const App = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<HomePage />} />
-          <Route path="/article" element={<ArticleView />} />
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<HomePage />} />
+            <Route path="/article" element={<ArticleView />} />
 
-          <Route path="saved" element={<SavedArticles />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Route>
-      </Routes>
-    </Router>
+            <Route path="saved" element={<SavedArticles />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Route>
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 };
 

@@ -1,9 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
+// server/prisma/schema.prisma
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,9 +9,30 @@ datasource db {
 }
 
 model Article {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   title     String
   content   String
   summary   String?
   createdAt DateTime @default(now())
+}
+
+model SavedArticle {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  // For guests: "guest_sessionId"
+  // For users: actual user ID
+  userId      String
+  articleId   String
+  title       String
+  description String?
+  url         String
+  urlToImage  String?
+  source      String?
+  content     String?
+  publishedAt String
+  category    String?
+  author      String?
+  savedAt     DateTime @default(now())
+
+  @@unique([userId, articleId])
+  @@index([userId])
 }

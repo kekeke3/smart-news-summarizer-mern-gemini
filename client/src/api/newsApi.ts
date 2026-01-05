@@ -1,8 +1,7 @@
 import axios from "axios";
 import type { NewsParams } from "../types/news";
-
 const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+  import.meta.env.VITE_API_BASE_URL || "https://smart-news-summarizer-mern-gemini.onrender.com";
 
 export const fetchEverythingNews = async ({ q, page = 1 }: NewsParams) => {
   const response = await axios.get(

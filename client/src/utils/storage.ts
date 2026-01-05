@@ -4,7 +4,7 @@ import type { Article } from "../types/news";
 
 // Use environment variable if available, otherwise use default
 const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+  import.meta.env.VITE_API_BASE_URL || "https://smart-news-summarizer-mern-gemini.onrender.com";
 
 // Generate/retrieve session ID
 const getSessionId = (): string => {

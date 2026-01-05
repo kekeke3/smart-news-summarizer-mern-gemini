@@ -102,7 +102,8 @@ export const saveArticle = async (
       res.cookie("sessionId", sessionId, {
         maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
         httpOnly: true,
-        sameSite: "lax",
+        sameSite: "none", // Changed to 'none' for cross-domain
+        secure: true, // Must be true with sameSite: 'none'
       });
     }
 

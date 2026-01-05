@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import NewsCard from "../components/NewsCard";
 import { getSavedArticles } from "../utils/storage";
-import type { Article } from "../utils/storage";
+import type { Article } from "../types/news";
 
 const SavedArticles = () => {
   const [savedArticles, setSavedArticles] = useState<Article[]>([]);
@@ -23,11 +23,11 @@ const SavedArticles = () => {
 
     fetchSavedArticles();
   }, []);
-
+  /* 
   const handleArticleUnsaved = () => {
     // Refresh the list
     getSavedArticles().then(setSavedArticles);
-  };
+  }; */
 
   if (isLoading) {
     return (

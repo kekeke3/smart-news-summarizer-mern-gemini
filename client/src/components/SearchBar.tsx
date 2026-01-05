@@ -1,4 +1,10 @@
-const SearchBar = ({ value, onChange }) => {
+// src/components/SearchBar.tsx
+interface SearchBarProps {
+  value: string;
+  onChange: (value: string) => void;
+}
+
+const SearchBar = ({ value, onChange }: SearchBarProps) => {
   return (
     <div className="relative">
       <input

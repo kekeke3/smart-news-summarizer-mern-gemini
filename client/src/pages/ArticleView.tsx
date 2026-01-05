@@ -8,6 +8,7 @@ const ArticleView = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const article = location.state?.article as Article;
+  console.log(article)
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
 
   if (!article) {

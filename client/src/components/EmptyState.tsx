@@ -1,4 +1,12 @@
-const EmptyState = ({ icon, title, description }) => {
+import type { ReactNode } from "react"; // Use type-only import
+
+interface EmptyStateProps {
+  icon: ReactNode;
+  title: string;
+  description: string;
+}
+
+const EmptyState = ({ icon, title, description }: EmptyStateProps) => {
   return (
     <div className="bg-light rounded-lg p-8 text-center">
       <div className="mx-auto mb-4 text-gray-400">{icon}</div>

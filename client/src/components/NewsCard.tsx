@@ -1,21 +1,21 @@
 // client/src/components/NewsCard.tsx
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { isArticleSaved } from "../utils/storage";
+import { isArticleSaved, saveArticle } from "../utils/storage"; // Import saveArticle
 import SaveButton from "./SaveButton";
-import type { Article } from "../utils/storage";
+import type { Article } from "../types/news"; // Fix import path
 
 interface NewsCardProps {
   article: Article;
   showSaveButton?: boolean;
+  onSummarize?: () => void; // Add if needed
 }
 
 const NewsCard = ({ article, showSaveButton = true }: NewsCardProps) => {
   const navigate = useNavigate();
   const [isSaved, setIsSaved] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false); // Add this state
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
-  // Check saved status on mount
   useEffect(() => {
     const checkSavedStatus = async () => {
       const saved = await isArticleSaved(article);
@@ -28,15 +28,23 @@ const NewsCard = ({ article, showSaveButton = true }: NewsCardProps) => {
     navigate("/article", { state: { article } });
   };
 
+  const handleSaveArticle = async () => {
+    try {
+      await saveArticle(article);
+      setIsSaved(true);
+    } catch (error) {
+      console.error("Failed to save article:", error);
+    }
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition relative">
-      {/* Floating save button */}
       {showSaveButton && (
         <div className="absolute top-2 right-2 z-10">
           <SaveButton
             article={article}
             size="md"
-            onLoginRequest={() => setShowLoginModal(true)} // Add this
+            onLoginRequest={() => setShowLoginModal(true)}
           />
         </div>
       )}
@@ -50,7 +58,7 @@ const NewsCard = ({ article, showSaveButton = true }: NewsCardProps) => {
             className="w-full h-48 object-cover cursor-pointer"
             onClick={handleViewArticle}
           />
-          {/* Save indicator badge */}
+          {/* Add saved badge - USE isSaved STATE */}
           {isSaved && (
             <div className="absolute top-2 left-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
               <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
@@ -74,7 +82,7 @@ const NewsCard = ({ article, showSaveButton = true }: NewsCardProps) => {
               </p>
               <div className="space-y-3">
                 <button
-                  onClick={() => {
+                  onClick={async () => {
                     // Simple mock login
                     localStorage.setItem("userId", `demo_user_${Date.now()}`);
                     localStorage.setItem(
@@ -86,8 +94,7 @@ const NewsCard = ({ article, showSaveButton = true }: NewsCardProps) => {
                     );
                     setShowLoginModal(false);
                     // Save the article after login
-                    saveArticle(article);
-                    setIsSaved(true);
+                    await handleSaveArticle(); // Use the handler function
                   }}
                   className="w-full bg-primary text-white py-2 rounded-md hover:bg-primary-dark transition font-medium"
                 >

@@ -5,7 +5,7 @@ import { summarizeNews } from "../api/aiApi";
 interface SummaryModalProps {
   article: {
     title: string;
-    content: string;
+    content?: string; // Make content optional
     source?: { name: string };
     publishedAt: string;
     url: string;
@@ -16,7 +16,6 @@ interface SummaryModalProps {
 const SummaryModal = ({ article, onClose }: SummaryModalProps) => {
   const [summary, setSummary] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const [isSaved, setIsSaved] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {

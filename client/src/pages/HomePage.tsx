@@ -45,9 +45,9 @@ const HomePage = () => {
 
         setArticles(data.articles);
         setTotalResults(data.totalResults || 0);
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error("Error fetching news:", err);
-        setError(err.message || "Failed to fetch news");
+        setError(err instanceof Error ? err.message : "Failed to fetch news");
       } finally {
         setIsLoading(false);
       }
@@ -78,9 +78,9 @@ const HomePage = () => {
 
       setArticles((prev) => [...prev, ...data.articles]);
       setCurrentPage(page);
-    } catch (err: any) {
-      console.error("Error loading more news:", err);
-      setError(err.message || "Failed to load more news");
+    } catch (err: unknown) {
+      console.error("Error fetching news:", err);
+      setError(err instanceof Error ? err.message : "Failed to fetch news");
     } finally {
       setIsLoading(false);
     }

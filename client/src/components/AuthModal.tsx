@@ -41,8 +41,13 @@ const AuthModal: React.FC<AuthModalProps> = ({
       setEmail("");
       setPassword("");
       setName("");
-    } catch (err: any) {
-      setError(err.message || "Authentication failed");
+    } catch (err: unknown) {
+      // Use unknown instead of any
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Authentication failed");
+      }
     } finally {
       setIsSubmitting(false);
     }

@@ -2,14 +2,15 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import NewsCard from "../components/NewsCard";
 import LoadingSpinner from "../components/LoadingSpinner";
+import type { Article } from "../types/news";
 
 const CategoriesPage = () => {
-  const { category } = useParams();
-  const [articles, setArticles] = useState([]);
+  const { category } = useParams<{ category: string }>(); // Add type annotation
+  const [articles, setArticles] = useState<Article[]>([]); // Changed from [] to Article[]
   const [isLoading, setIsLoading] = useState(true);
 
-  // Format category name for display
-  const formatCategoryName = (cat) => {
+  // Fix: Add type annotation for parameter
+  const formatCategoryName = (cat: string | undefined) => {
     return cat ? cat.charAt(0).toUpperCase() + cat.slice(1) : "All";
   };
 
@@ -17,15 +18,16 @@ const CategoriesPage = () => {
     const fetchCategoryNews = async () => {
       setIsLoading(true);
       try {
-        // Replace with actual API call filtered by category
-        const mockData = [
+        // Fix: Make sure mockData matches Article type
+        const mockData: Article[] = [
+          // Add type annotation
           {
             id: "1",
             title: `${formatCategoryName(category)} News Example 1`,
             description: `This is an example of a ${category} news article that would be fetched from the API.`,
-            source: "Example News",
+            source: { id: "example", name: "Example News" }, // Fix source structure
             publishedAt: new Date().toISOString(),
-            imageUrl: "https://via.placeholder.com/300x200",
+            urlToImage: "https://via.placeholder.com/300x200", // Changed from imageUrl to urlToImage
             url: "#",
             category: category,
           },
@@ -33,9 +35,9 @@ const CategoriesPage = () => {
             id: "2",
             title: `${formatCategoryName(category)} News Example 2`,
             description: `Another example article in the ${category} category.`,
-            source: "Sample News",
+            source: { id: "sample", name: "Sample News" },
             publishedAt: new Date().toISOString(),
-            imageUrl: "https://via.placeholder.com/300x200",
+            urlToImage: "https://via.placeholder.com/300x200",
             url: "#",
             category: category,
           },
@@ -68,9 +70,7 @@ const CategoriesPage = () => {
             <NewsCard
               key={article.id}
               article={article}
-              onSummarize={() => {
-                /* Implement modal open */
-              }}
+              
             />
           ))}
         </div>

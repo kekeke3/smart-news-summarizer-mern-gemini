@@ -1,4 +1,9 @@
-const CategorySelector = ({ selected, onChange }) => {
+interface CategorySelectorProps {
+  selected: string;
+  onChange: (category: string) => void;
+}
+
+const CategorySelector = ({ selected, onChange }: CategorySelectorProps) => {
   const categories = [
     { value: "general", label: "General" },
     { value: "business", label: "Business" },

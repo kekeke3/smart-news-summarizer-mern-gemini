@@ -3,11 +3,12 @@ import { useState, useEffect } from "react";
 import { BookmarkIcon as BookmarkOutline } from "@heroicons/react/24/outline";
 import { BookmarkIcon as BookmarkSolid } from "@heroicons/react/24/solid";
 import { saveArticle, unsaveArticle, isArticleSaved } from "../utils/storage";
+import type { Article } from "../types/news"; // Import your Article type
 
 interface SaveButtonProps {
-  article: any;
+  article: Article; // Use Article type instead of any
   size?: "sm" | "md" | "lg";
-  onLoginRequest?: () => void; // Add this prop
+  onLoginRequest?: () => void;
 }
 
 const SaveButton: React.FC<SaveButtonProps> = ({

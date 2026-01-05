@@ -1,4 +1,19 @@
-const SavedSummaryCard = ({ summary }) => {
+// src/components/SavedSummaryCard.tsx
+interface SavedSummary {
+  id: string;
+  title: string;
+  summary: string;
+  source: string;
+  originalUrl: string;
+  savedAt: string;
+  // Add other properties as needed
+}
+
+interface SavedSummaryCardProps {
+  summary: SavedSummary;
+}
+
+const SavedSummaryCard = ({ summary }: SavedSummaryCardProps) => {
   return (
     <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition">
       <div className="flex justify-between items-start mb-2">

@@ -1,10 +1,6 @@
 // client/src/contexts/AuthContext.tsx
 import React, { createContext, useState, useContext, useEffect } from "react";
-import {
-  loginAndMergeArticles,
-  logout as apiLogout,
-  getSavedArticles,
-} from "../utils/storage";
+import { loginAndMergeArticles, logout as apiLogout } from "../utils/storage";
 
 interface User {
   id: string;
@@ -50,7 +46,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setIsLoading(false);
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string) => {
     setIsLoading(true);
     try {
       // Mock login - replace with real API call
@@ -82,7 +78,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const register = async (name: string, email: string, password: string) => {
+  const register = async (name: string, email: string) => {
     setIsLoading(true);
     try {
       // Mock registration - replace with real API call

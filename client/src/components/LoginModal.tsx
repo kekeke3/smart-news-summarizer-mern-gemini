@@ -2,12 +2,17 @@
 import { useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
+interface User {
+  id: string;
+  email: string;
+  name: string;
+}
+
 interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onLogin: (email: string, name?: string) => void;
+  onLogin: (user: User) => void; // Changed to accept User object
 }
-
 const LoginModal: React.FC<LoginModalProps> = ({
   isOpen,
   onClose,
@@ -42,14 +47,14 @@ const LoginModal: React.FC<LoginModalProps> = ({
     }
 
     // For demo purposes, create a mock user
-    const mockUser = {
+    const mockUser: User = {
       id: `user_${Date.now()}`,
       email,
       name: name || email.split("@")[0],
     };
 
     // Call onLogin with user data
-    onLogin(mockUser);
+    onLogin(mockUser); // Now this matches the interface
 
     // Reset form
     setEmail("");

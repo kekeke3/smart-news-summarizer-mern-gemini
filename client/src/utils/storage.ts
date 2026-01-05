@@ -1,12 +1,10 @@
 // client/src/utils/storage.ts
 import axios from "axios";
+import type { Article } from "../types/news";
 
 // Use environment variable if available, otherwise use default
 const API_BASE_URL =
   import.meta.env.VITE_API_URL || "http://localhost:5000/api";
-
-// Or simpler - just hardcode for now:
-// const API_BASE_URL = 'http://localhost:5000/api';
 
 // Generate/retrieve session ID
 const getSessionId = (): string => {
@@ -18,9 +16,9 @@ const getSessionId = (): string => {
   return sessionId;
 };
 
-// Get headers
+// Get headers with proper typing
 const getHeaders = () => {
-  const headers: any = {
+  const headers: Record<string, string> = {
     "x-session-id": getSessionId(),
   };
 
@@ -33,25 +31,17 @@ const getHeaders = () => {
   return headers;
 };
 
-export interface Article {
-  id?: string;
-  title: string;
-  description: string;
-  url: string;
-  urlToImage?: string;
-  publishedAt: string;
-  source?: {
-    name: string;
-  };
-  content?: string;
-  category?: string;
-  author?: string;
+// Define a type for the save response
+interface SaveResponse {
+  success: boolean;
+  article: Article;
+  message?: string;
 }
 
 // Save article
-export const saveArticle = async (article: Article): Promise<any> => {
+export const saveArticle = async (article: Article): Promise<SaveResponse> => {
   try {
-    const response = await axios.post(
+    const response = await axios.post<SaveResponse>(
       `${API_BASE_URL}/saved/save`,
       {
         articleId: article.url,
@@ -72,10 +62,15 @@ export const saveArticle = async (article: Article): Promise<any> => {
     saveToLocalStorage(article);
 
     return response.data;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error saving article:", error);
     saveToLocalStorage(article);
-    return article;
+    return {
+      success: false,
+      article,
+      message:
+        error instanceof Error ? error.message : "Failed to save article",
+    };
   }
 };
 
@@ -89,7 +84,7 @@ export const unsaveArticle = async (article: Article): Promise<boolean> => {
 
     removeFromLocalStorage(article);
     return true;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error unsaving article:", error);
     removeFromLocalStorage(article);
     return true;
@@ -99,7 +94,7 @@ export const unsaveArticle = async (article: Article): Promise<boolean> => {
 // Get saved articles
 export const getSavedArticles = async (): Promise<Article[]> => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/saved`, {
+    const response = await axios.get<Article[]>(`${API_BASE_URL}/saved`, {
       headers: getHeaders(),
     });
 
@@ -115,7 +110,7 @@ export const getSavedArticles = async (): Promise<Article[]> => {
     );
 
     return uniqueArticles;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error fetching saved articles:", error);
     return getFromLocalStorage();
   }
@@ -124,13 +119,13 @@ export const getSavedArticles = async (): Promise<Article[]> => {
 // Check if article is saved
 export const isArticleSaved = async (article: Article): Promise<boolean> => {
   try {
-    const response = await axios.get(
+    const response = await axios.get<{ isSaved: boolean }>(
       `${API_BASE_URL}/saved/check/${encodeURIComponent(article.url)}`,
       { headers: getHeaders() }
     );
 
     return response.data.isSaved || checkLocalStorage(article);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error checking saved status:", error);
     return checkLocalStorage(article);
   }
@@ -147,7 +142,7 @@ export const loginAndMergeArticles = async (
     localStorage.setItem("token", token);
 
     // Merge guest articles to user account
-    const response = await axios.post(
+    const response = await axios.post<Article[]>(
       `${API_BASE_URL}/saved/merge`,
       { userId },
       { headers: getHeaders() }
@@ -157,7 +152,7 @@ export const loginAndMergeArticles = async (
     localStorage.removeItem(SAVED_ARTICLES_KEY);
 
     return response.data;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error merging articles:", error);
     throw error;
   }

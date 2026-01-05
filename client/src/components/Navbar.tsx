@@ -4,6 +4,13 @@ import { useState } from "react";
 import LoginModal from "./LoginModal";
 import { logout } from "../utils/storage";
 
+// Define user type
+interface User {
+  id: string;
+  email: string;
+  name: string;
+}
+
 const Navbar = () => {
   const location = useLocation();
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -16,7 +23,8 @@ const Navbar = () => {
     return location.pathname === path;
   };
 
-  const handleLogin = (userData: any) => {
+  const handleLogin = (userData: User) => {
+    // Remove 'any', use User type
     // Store user data
     localStorage.setItem("userId", userData.id);
     localStorage.setItem("userData", JSON.stringify(userData));

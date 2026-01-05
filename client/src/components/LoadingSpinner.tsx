@@ -1,5 +1,9 @@
-const LoadingSpinner = ({ size = "md" }) => {
-  const sizes = {
+interface LoadingSpinnerProps {
+  size?: "sm" | "md" | "lg";
+}
+
+const LoadingSpinner = ({ size = "md" }: LoadingSpinnerProps) => {
+  const sizes: Record<"sm" | "md" | "lg", string> = {
     sm: "h-6 w-6",
     md: "h-8 w-8",
     lg: "h-12 w-12",
